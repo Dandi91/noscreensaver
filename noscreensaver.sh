@@ -28,34 +28,36 @@ set_disable()
 }
 
 set_enable
-we_did_it=0
+ss_disabled=0
 
 while true; do
   sleep 50
-  do_turn_off=0
+  flash_fullscreen=0
 
   # check to see if flashplayer is being used by iceweasel
   flash_pid=`pgrep plugin`
   if [ `pgrep iceweasel` ] && [ $flash_pid ]; then
-    # check to see if current application is fullscreen
+    # get information about the foreground application
     current_window_id=`xprop -root | grep "_NET_ACTIVE_WINDOW(WINDOW)" | cut -d" " -f5`
-    is_fullscreen=`xprop -id $current_window_id | grep "_NET_WM_STATE_FULLSCREEN"`
-    current_window_pid=`xprop -id $current_window_id | grep "_NET_WM_PID" | cut -d" " -f3`
+    current_window_props=`xprop -id $current_window_id` 
+    is_fullscreen=`$current_window_props | grep "_NET_WM_STATE_FULLSCREEN"`
+    current_window_pid=`$current_window_props | grep "_NET_WM_PID" | cut -d" " -f3`
+    # check if the foreground app is flashplayer and it's in fullscreen mode
     if [ "$is_fullscreen" ] && [ $current_window_pid = $flash_pid ]; then
-      do_turn_off=1
+      flash_fullscreen=1
     fi
   fi
 
   # read current state of screensaver
-  is_ss_on=`gsettings get org.gnome.desktop.screensaver idle-activation-enabled`
+  ss_state=`gsettings get org.gnome.desktop.screensaver idle-activation-enabled`
                                              
   # change state of screensaver as necessary
-  if [ "$do_turn_off" = "1" ] && [ "$is_ss_on" = "true" ]; then
+  if [ "$flash_fullscreen" = "1" ] && [ "$ss_state" = "true" ]; then
     set_disable
-    we_did_it=1
-  elif [ "$do_turn_off" = "0" ] && [ "$is_ss_on" = "false" ] && [ "$we_did_it" = "1" ]; then
+    ss_disabled=1
+  elif [ "$flash_fullscreen" = "0" ] && [ "$ss_state" = "false" ] && [ "$ss_disabled" = "1" ]; then
     set_enable
-    we_did_it=0
+   ss_disabled=0
   fi
 
 done
