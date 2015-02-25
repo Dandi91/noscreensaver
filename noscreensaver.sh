@@ -34,9 +34,9 @@ while true; do
   sleep 45
   flash_fullscreen=0
 
-  # check to see if flashplayer is being used by iceweasel
+  # check to see if flashplayer is being used either by iceweasel or by firefox
   flash_pid=`pgrep plugin-cont`
-  if [ `pgrep iceweasel` ] && [ $flash_pid ]; then
+  if [ [ `pgrep iceweasel` ] || [ `pgrep firefox` ] ] && [ $flash_pid ]; then
     # get information about the foreground application
     current_window_id=`xprop -root | grep "_NET_ACTIVE_WINDOW(WINDOW)" | cut -d" " -f5`
     is_fullscreen=`xprop -id $current_window_id | grep "_NET_WM_STATE_FULLSCREEN"`
