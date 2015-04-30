@@ -8,6 +8,7 @@ set_enabled()
   gsettings set org.gnome.desktop.session idle-delay 90
   gsettings set org.gnome.desktop.screensaver idle-activation-enabled true
   gsettings set org.gnome.desktop.screensaver lock-enabled true
+  gsettings set org.gnome.settings-daemon.plugins.power idle-dim true
   gsettings set org.gnome.settings-daemon.plugins.power idle-dim-ac true
   gsettings set org.gnome.settings-daemon.plugins.power idle-dim-battery true
   gsettings set org.gnome.settings-daemon.plugins.power sleep-display-ac 300
@@ -20,6 +21,7 @@ set_disabled()
   gsettings set org.gnome.desktop.session idle-delay 0
   gsettings set org.gnome.desktop.screensaver idle-activation-enabled false
   gsettings set org.gnome.desktop.screensaver lock-enabled false
+  gsettings set org.gnome.settings-daemon.plugins.power idle-dim false
   gsettings set org.gnome.settings-daemon.plugins.power idle-dim-ac false
   gsettings set org.gnome.settings-daemon.plugins.power idle-dim-battery false
   gsettings set org.gnome.settings-daemon.plugins.power sleep-display-ac 0
