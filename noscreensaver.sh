@@ -43,6 +43,12 @@ while true; do
     fi
   fi
 
+  # check whether skype is the foreground app
+  if [ "`pgrep skype`" = "$current_window_pid" ]; then
+    needs_be_disabled=1
+    echo "Skype is the foreground app"
+  fi
+
   # check if kindle reader is the foreground app
   if [ "`pgrep Kindle.exe`" = "$current_window_pid" ]; then
     needs_be_disabled=1
