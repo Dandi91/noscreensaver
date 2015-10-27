@@ -43,6 +43,22 @@ while true; do
     fi
   fi
 
+  # check whether mozilla is the foreground app
+  # then handle individual cases with several website titles
+  if [ "`pgrep firefox`" = "$current_window_pid" ]; then
+    regexp="^WM_NAME\(STRING\) = \"(.*)\"$"
+    current_window_title=`xprop -id $current_window_id | grep "WM_NAME(STRING)"`
+    [[ $current_window_title =~ $regexp ]]
+    current_window_title=${BASH_REMATCH[1]}
+    regexp="^.*(WAMAP).*$"
+    [[ $current_window_title =~ $regexp ]]
+    res=${BASH_REMATCH[1]}
+    if [ "$res" != "" ]; then
+      needs_be_disabled=1
+      echo "WAMAP detected"
+    fi
+  fi
+
   # check whether skype is the foreground app
   if [ "`pgrep skype`" = "$current_window_pid" ]; then
     needs_be_disabled=1
