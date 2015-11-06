@@ -50,12 +50,12 @@ while true; do
     current_window_title=`xprop -id $current_window_id | grep "WM_NAME(STRING)"`
     [[ $current_window_title =~ $regexp ]]
     current_window_title=${BASH_REMATCH[1]}
-    regexp="^.*(WAMAP).*$"
+    regexp="^.*(WAMAP|MasteringPhysics).*$"
     [[ $current_window_title =~ $regexp ]]
     res=${BASH_REMATCH[1]}
     if [ "$res" != "" ]; then
       needs_be_disabled=1
-      echo "WAMAP detected"
+      echo "Useful website detected"
     fi
   fi
 
